@@ -38,7 +38,7 @@ zweite Methode keinen braucht und sich eigentständing um eine Ausgabe kümmern 
 
 ## Aufgabe 3
 
-a: TypeError: 'int' object is not iterable -> Falscher Datentyp<br>
+a: TypeError: 'int' object is not iterable -> Falscher Datentyp (int ist keine Liste)<br>
 b: TypeError: unsupported operand type(s) for +=: 'int' and 'str' -> Falscher Datentyp<br>
 c: TypeError: unsupported operand type(s) for +=: 'int' and 'str' -> Falscher Datentyp
 
