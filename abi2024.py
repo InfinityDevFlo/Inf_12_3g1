@@ -89,7 +89,7 @@ class Stack:
     def isEmpty(self) -> bool:
         """
         Überprüfung ob der Stapel Elemente beinhaltet. Entsprechend wird beim Leeren Stapel True zurückgegeben
-        Sobald der Stapel mindestens einen Wert erhält ist der Rückgabewert False
+        sobald der Stapel mindestens einen Wert erhält ist der Rückgabewert False
 
         :return: Wenn der Stapel Leer ist True. Ansonsten False
         """
@@ -181,8 +181,8 @@ class BinTree:
 
     def __init__(self, item):
         """
-        Initialisiert den Baum mit dem Entsprechenden Startwert
-        :param item: Der Wert, dem die Wurzel des Baumes zu beginn annimmt
+        Initialisiert den Baum mit dem entsprechenden Startwert
+        :param item: Der Wert, dem die Wurzel des Baumes zu Beginn annimmt
         """
         self.item = item
         self.right = None
