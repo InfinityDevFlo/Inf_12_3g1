@@ -12,6 +12,8 @@
 8. Es wird überprüft ob die Reihe nicht leer ist
 9. Wenn die Reihe nicht leer ist, dann wird das 3 letzte Item aus der Liste ausgegeben
 
-## Aufgabe 2
+## Aufgabe 3
+
+Siehe Ordner 2022_09_21_Sortieralgorithmen
 
 
