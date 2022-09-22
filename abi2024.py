@@ -4,8 +4,6 @@ Implementation aller Klassen und Methoden gemäß der Bestimmungen für das Abit
 
 https://www.nibis.de/uploads/mk-bolhoefer/2024/18InformatikHinweise2024.pdf
 
-Implementiert von Florin Dornig
-
 """
 
 
