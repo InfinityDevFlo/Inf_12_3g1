@@ -1,6 +1,5 @@
 from abi2024 import *
 
-
 def sort(stack: Stack) -> Stack:
     sorted = Stack()
     while not stack.isEmpty():
