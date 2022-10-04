@@ -15,6 +15,6 @@ alter.append(27)
 alter.append(28)
 alter.append(31)
 alter.append(19)
-GetDynArryay(alter)
+GetDynArray(alter)
 
 
