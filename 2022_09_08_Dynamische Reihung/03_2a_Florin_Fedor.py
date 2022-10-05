@@ -1,7 +1,7 @@
 from abi2024 import *
 
 
-def GetDynArryay(array: DynArray):
+def GetDynArray(array: DynArray):
     for index in range(array.getLength()):
         print(array.getItem(index))
 
