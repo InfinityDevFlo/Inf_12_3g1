@@ -47,7 +47,7 @@ class DynArray:
 
     def insertAt(self, index, value):
         """
-        Fügt <value> an der stelle <index> ein und erhöht den Index aller folgenden Elemente um 1
+        Fügt <value> an der stelle <index> ein und erhöht den Index aller folgenden Elemente um 1_2
         """
         self.elements.insert(index, value)
 
