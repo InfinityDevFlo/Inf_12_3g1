@@ -88,16 +88,6 @@ def sortStack(stack: Stack) -> Stack:
     return sorted
 
 
-def sortQueue(queue: Queue) -> Queue:
-    sorted = Queue()
-    while not queue.isEmpty():
-        highest = queue.dequeue()
-        while not sorted.isEmpty() and sorted.head() < highest:
-            queue.enqueue(sorted.dequeue())
-        sorted.enqueue(highest)
-    return sorted
-
-
 def quicksort(array: DynArray) -> DynArray:
     if array.getLength() > 1:
         pivot = array.getItem(array.getLength() // 2)
@@ -145,3 +135,104 @@ def findLowestPosition(array: DynArray) -> int:
         if array.getItem(min) > array.getItem(index):
             min = index
     return min
+
+
+def copyQueue(queue: Queue):
+    temp = Queue()
+    temp2 = Queue()
+    while not queue.isEmpty():
+        temp.enqueue(queue.head())
+        temp2.enqueue(queue.dequeue())
+    while not temp.isEmpty():
+        queue.enqueue(temp.dequeue())
+    return temp2
+
+
+def getQueueSize(queue: Queue) -> int:
+    temp = copyQueue(queue)
+    size = 0
+    while not temp.isEmpty():
+        size += 1
+        temp.dequeue()
+    return size
+
+
+def getQueue(queue: Queue):
+    temp = Queue()
+    while not queue.isEmpty():
+        print(queue.head())
+        temp.enqueue(queue.dequeue())
+    while not temp.isEmpty():
+        queue.enqueue(temp.dequeue())
+
+
+# 2b
+
+def getMostCommonElement(queue: Queue):
+    temp = copyQueue(queue)
+    mostCommonElement = None
+    mostCommonElementCount = 0
+    while not temp.isEmpty():
+        currentElement = temp.dequeue()
+        currentElementCount = 1
+        while currentElement in temp.elements:
+            currentElementCount += 1
+            temp.dequeue()
+        if currentElementCount > mostCommonElementCount:
+            mostCommonElement = currentElement
+            mostCommonElementCount = currentElementCount
+    return mostCommonElement, mostCommonElementCount
+
+
+# 2c
+
+def flipQueue(queue: Queue):
+    temp = copyQueue(queue)
+    temp2 = Queue()
+    while not temp.isEmpty():
+        for i in range(getQueueSize(temp) - 1):
+            temp.enqueue(temp.dequeue())
+        temp2.enqueue(temp.dequeue())
+    return temp2
+
+
+def getQueueMaximum(queue: Queue):
+    temp = copyQueue(queue)
+    maximum = temp.dequeue()
+    while not temp.isEmpty():
+        current = temp.dequeue()
+        if current > maximum:
+            maximum = current
+    return maximum
+
+
+def getAmountOfElement(queue: Queue, element: int) -> int:
+    temp = copyQueue(queue)
+    amount = 0
+    while not temp.isEmpty():
+        if temp.dequeue() == element:
+            amount += 1
+    return amount
+
+
+def removeAll(queue: Queue, element: int):
+    temp = copyQueue(queue)
+    temp2 = Queue()
+    while not temp.isEmpty():
+        first = temp.dequeue()
+        if first != element:
+            temp2.enqueue(first)
+
+    return temp2
+
+
+def sortQueue(queue: Queue) -> Queue:
+    temp = copyQueue(queue)
+    temp2 = Queue()
+    while not getQueueSize(temp2) == getQueueSize(queue):
+        maximum = getQueueMaximum(temp)
+        amount = getAmountOfElement(temp, maximum)
+        for i in range(amount):
+            temp2.enqueue(maximum)
+        temp = removeAll(temp, maximum)
+    return temp2
