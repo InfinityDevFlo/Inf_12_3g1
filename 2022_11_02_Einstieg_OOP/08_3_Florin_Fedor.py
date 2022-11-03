@@ -41,6 +41,8 @@ def update():
     elif keyboard.s and alien2.y < HEIGHT:
         alien2.y += 1
 
+    if alien.pos == alien2.pos:
+        screen.draw.text("Ich hab dich", (20, 100))
 
 
 
