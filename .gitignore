@@ -16,6 +16,12 @@
 pom.xml
 **/pom.xml
 
+.fleet/**
+.fleet
+.fleet/*
+
+
+
 # Generated files
 .idea/**/contentModel.xml
 

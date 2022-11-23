@@ -30,7 +30,7 @@ def getMostCommonElement(queue: Queue):
     return mostCommonElement, mostCommonElementCount
 
 
-# 2c
+# 2
 
 def flipQueue(queue: Queue):
     temp = copyQueue(queue)
