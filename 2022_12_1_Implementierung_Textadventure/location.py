@@ -2,41 +2,35 @@ from item import Item
 
 from abi2024 import DynArray
 import utils
+import item as ITEMS
 
 
-def LocationRequirement(interface):
-    def check() -> bool:
+class LocationRequirement(object):
+
+    def __init__(self):
+        pass
+
+    def check(self) -> bool:
         pass
 
 
-class Location():
+class Location(object):
 
-    def __init__(self, name: str, description: str, items: DynArray = DynArray(),
-                 requirements: DynArray = DynArray(), **locs):
+    def __init__(self, id: str, name: str, description: str, locs: DynArray, items: DynArray = DynArray(),
+                 requirements: DynArray = DynArray()):
+        self.id = id
         self.name = name
         self.items = items
         self.description = description
         self.requirements = requirements
-        self.north = locs.get("north", "Empty")
-        self.east = locs.get("east", "Empty")
-        self.south = locs.get("south", "Empty")
-        self.west = locs.get("west", "Empty")
+        self.neighbor_locs = locs
 
     def enter(self):
         print(self.description)
         utils.PLAYERINSTANCE.setLocation(self)
 
-    def getNorth(self) -> str:
-        return self.north
-
-    def getEast(self) -> str:
-        return self.east
-
-    def getSouth(self) -> str:
-        return self.south
-
-    def getWest(self) -> str:
-        return self.west
+    def getNeighborLocations(self) -> DynArray:
+        return self.neighbor_locs
 
     def getDescription(self) -> str:
         return self.description
@@ -69,64 +63,122 @@ class Location():
                 return False
         return True
 
+    def getName(self) -> str:
+        return self.name
 
-class Aula(Location):
+    def getId(self) -> str:
+        return self.id
+
+
+class Floor_1(Location):
+    def __init__(self):
+        neighbor_locs = DynArray()
+        neighbor_locs.append("elevator")
+        neighbor_locs.append("room_101")
+        neighbor_locs.append("room_102")
+        neighbor_locs.append("room_103")
+        super().__init__("floor_1", "Flur 1", "Du befindest dich im Flur des ersten Stockwerkes", neighbor_locs)
+
+
+class Floor_2(Location):
 
     def __init__(self):
-        super().__init__("Aula",
-                         "Du befindest dich nun in der Aula. Vor dir siehst du die Bühne, während du in den Reihen stehst. Westlich von dir befindet sich das Foyer.",
-                         west="Foyer", north="Bühne")
+        neighbor_locs = DynArray()
+        neighbor_locs.append("elevator")
+        neighbor_locs.append("room_201")
+        neighbor_locs.append("room_202")
+        neighbor_locs.append("room_203")
+
+        super().__init__("floor_2", "Flur 2", "Du bist im Flur des 2. Stockwerkes", locs= neighbor_locs)
 
 
-class Stage(Location):
-
-    def __init__(self):
-        super().__init__("Bühne", "", south="Aula")
-
-
-class Foyer(Location):
-    def __init__(self):
-        super().__init__("Foyer", "", west="Aula")
-
-
-class Sauelenhalle(Location):
-    def __init__(self):
-        super().__init__("Sauelenhalle", "", west="Foyer", north="Lehrerzimmer", east="Physik")
-
-
-class Physik(Location):
-    def __init__(self):
-        super().__init__("Physik", "", north="Sauelenhalle", east="Chemie", west="Physikraum")
-
-
-class Chemie(Location):
-    def __init__(self):
-        super().__init__("Chemie", "")
-
-
-class Physikraum(Location):
-    def __init__(self):
-        super().__init__("Physikraum", "")
-
-
-class Lehrerzimmer(Location):
-    def __init__(self):
-        super().__init__("Lehrerzimmer", "", south="Sauelehnalle")
-
-
-class EmptyLocation(Location):
+class Elevator(Location):
 
     def __init__(self):
-        super().__init__("Nichts", "Hier ist nichts", north=None, east=None, south=None, west=None)
+        neighbor_locs = DynArray()
+        neighbor_locs.append("exit")
+        neighbor_locs.append("floor_1")
+        neighbor_locs.append("floor_2")
+
+        super().__init__("elevator", "Aufzug", "Du bist im Aufzug", locs=neighbor_locs)
+
+
+class Room(Location):
+
+    def __init__(self, number: int, floor: int, description: str, items: DynArray = DynArray(),
+                 requirements: DynArray = DynArray()):
+        self.number = number
+        self.floor = floor
+        neighbor_locs = DynArray()
+        neighbor_locs.append("floor_" + str(floor))
+
+        super().__init__(f"room_{floor}0{number}", f"Raum {floor}0{number}", description, neighbor_locs, items,
+                         requirements)
+
+
+class Raum_101(Room):
+
+    def __init__(self):
+        super().__init__(1, 1, "Du bist im Raum 101", DynArray(), DynArray())
+
+
+class Raum_102(Room):
+
+    def __init__(self):
+        super().__init__(2, 1, "Du bist im Raum 102", DynArray(), DynArray())
+
+
+class Raum_103(Room):
+
+    def __init__(self):
+        items = DynArray()
+        items.append(ITEMS.Key())
+        super().__init__(3, 1, "Du bist im Raum 103", items, DynArray())
+
+
+class Raum_201(Room):
+
+    def __init__(self):
+        super().__init__(1, 2, "Du bist im Raum 201", DynArray(), DynArray())
+
+
+class Raum_202(Room):
+
+    def __init__(self):
+        super().__init__(2, 2, "Du bist im Raum 202", DynArray(), DynArray())
+
+
+class Raum_203(Room):
+
+    def __init__(self):
+        super().__init__(3, 2, "Du bist im Raum 203", DynArray(), DynArray())
+
+
+class ExitLocRequirement(LocationRequirement):
+
+    def __init__(self):
+        super().__init__()
+
+    def check(self) -> bool:
+        return utils.PLAYERINSTANCE.hasItem(ITEMS.Key())
+
+
+class Exit(Location):
+
+    def __init__(self):
+        requirements = DynArray()
+        requirements.append(ExitLocRequirement())
+        super().__init__("exit", "Exit", "Du bist im Ziel", DynArray(), DynArray(), requirements)
 
 
 LOCATIONS = utils.Map()
-LOCATIONS.put("Aula", Aula())
-LOCATIONS.put("Bühne", Stage())
-LOCATIONS.put("Foyer", Foyer())
-LOCATIONS.put("Sauelenhalle", Sauelenhalle())
-LOCATIONS.put("Physik", Physik())
-LOCATIONS.put("Chemie", Chemie())
-LOCATIONS.put("Physikraum", Physikraum())
-LOCATIONS.put("Lehrerzimmer", Lehrerzimmer())
-LOCATIONS.put("Empty", EmptyLocation())
+LOCATIONS.put("floor_1", Floor_1())
+LOCATIONS.put("floor_2", Floor_2())
+LOCATIONS.put("elevator", Elevator())
+LOCATIONS.put("room_101", Raum_101())
+LOCATIONS.put("room_102", Raum_102())
+LOCATIONS.put("room_103", Raum_103())
+LOCATIONS.put("room_201", Raum_201())
+LOCATIONS.put("room_202", Raum_202())
+LOCATIONS.put("room_203", Raum_203())
+LOCATIONS.put("exit", Exit())

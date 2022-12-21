@@ -3,7 +3,6 @@ from abi2024 import *
 
 PLAYERINSTANCE = None
 
-
 def clearScreen():
     print("\x1B[2J")
 
@@ -312,3 +311,4 @@ def arrayToSeparatedString(array: DynArray, separator: str = ", ") -> str:
         if i != array.getLength() - 1:
             string += separator
     return string
+
