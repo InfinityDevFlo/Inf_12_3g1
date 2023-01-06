@@ -9,7 +9,6 @@ if __name__ == "__main__":
 
     clearScreen()
 
-
     entry = """ 
           ______                 __     ___        __                        __        
          /_  __/  ___    _  __  / /_   /   |  ____/ / _   __  ___    ____   / /_  __  __   _____  ___ 
@@ -39,7 +38,7 @@ if __name__ == "__main__":
             running = False
             break
 
-        if ACTIONS.containsKey(action):
-            ACTIONS.get(action).execute(player)
+        if ACTIONS.containsKeyIgnoreCase(action):
+            ACTIONS.getIgnoreCase(action).execute(player)
         else:
             print("Das kannst du hier nicht tun")

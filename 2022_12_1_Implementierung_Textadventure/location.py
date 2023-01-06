@@ -43,11 +43,28 @@ class Location(object):
         return self
 
     def removeItem(self, item: Item) -> "Location":
-        self.items.remove(item)
+        index = None
+        for i in range(self.items.getLength()):
+            if self.items.getItem(i).getId() == item.getId():
+                index = i
+                break
+        self.items.delete(index)
         return self
 
     def getRequirements(self) -> DynArray:
         return self.requirements
+
+    def hasItem(self, id: str) -> bool:
+        for i in range(self.items.getLength()):
+            if self.items.getItem(i).getId() == id:
+                return True
+        return False
+
+    def getItem(self, id: str) -> Item:
+        for i in range(self.items.getLength()):
+            if self.items.getItem(i).getId() == id:
+                return self.items.getItem(i)
+        return None
 
     def addRequirement(self, requirement: LocationRequirement) -> "Location":
         self.requirements.append(requirement)
@@ -65,6 +82,9 @@ class Location(object):
 
     def getName(self) -> str:
         return self.name
+
+    def getItems(self) -> DynArray:
+        return self.items
 
     def getId(self) -> str:
         return self.id
@@ -89,7 +109,7 @@ class Floor_2(Location):
         neighbor_locs.append("room_202")
         neighbor_locs.append("room_203")
 
-        super().__init__("floor_2", "Flur 2", "Du bist im Flur des 2. Stockwerkes", locs= neighbor_locs)
+        super().__init__("floor_2", "Flur 2", "Du bist im Flur des 2. Stockwerkes", locs=neighbor_locs)
 
 
 class Elevator(Location):
@@ -148,10 +168,23 @@ class Raum_202(Room):
         super().__init__(2, 2, "Du bist im Raum 202", DynArray(), DynArray())
 
 
+class Room_203Requirement(LocationRequirement):
+
+    def __init__(self):
+        super().__init__()
+
+    def check(self) -> bool:
+        return input("Bitte Code eingeben: ") == "1984"
+
+
 class Raum_203(Room):
 
     def __init__(self):
-        super().__init__(3, 2, "Du bist im Raum 203", DynArray(), DynArray())
+        items = DynArray()
+        items.append(ITEMS.Key())
+        requirements = DynArray()
+        requirements.append(Room_203Requirement())
+        super().__init__(3, 2, "Super! Du hast es geschafft den Code zu knacken. Auf dem Tisch im Zimmer siehst du einen Schlüssel. Den müssen die Reinigungskräfte hier wohl vergessen haben. ", items=items, requirements=requirements)
 
 
 class ExitLocRequirement(LocationRequirement):
@@ -160,7 +193,7 @@ class ExitLocRequirement(LocationRequirement):
         super().__init__()
 
     def check(self) -> bool:
-        return utils.PLAYERINSTANCE.hasItem(ITEMS.Key())
+        return utils.PLAYERINSTANCE.hasItem("key")
 
 
 class Exit(Location):

@@ -245,15 +245,15 @@ class Map(object):
         self.keys = DynArray()
         self.values = DynArray()
 
+    def getIgnoreCase(self, key: str):
+        for index in range(self.keys.getLength()):
+            if self.keys.getItem(index).lower() == key.lower():
+                return self.values.getItem(index)
+
     def get(self, key: str):
-        index = None
-        for i in range(self.keys.getLength()):
-            if self.keys.getItem(i) == key:
-                index = i
-        if index is not None:
-            return self.values.getItem(index)
-        else:
-            return None
+        for index in range(self.keys.getLength()):
+            if self.keys.getItem(index) == key:
+                return self.values.getItem(index)
 
     def put(self, key: str, value: object):
         index = None
@@ -278,6 +278,12 @@ class Map(object):
     def containsKey(self, key: str) -> bool:
         for i in range(self.keys.getLength()):
             if self.keys.getItem(i) == key:
+                return True
+        return False
+
+    def containsKeyIgnoreCase(self, key: str) -> bool:
+        for i in range(self.keys.getLength()):
+            if self.keys.getItem(i).lower() == key.lower():
                 return True
         return False
 
